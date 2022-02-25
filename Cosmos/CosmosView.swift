@@ -300,9 +300,13 @@ Shows: ★★★★☆ (123)
 
   /// Deciding whether to recognize a gesture.
   open override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-    if settings.disablePanGestures {
-      return !(gestureRecognizer is UIPanGestureRecognizer)
-    }
+      var location = gestureRecognizer.location(in: self).x
+      if RightToLeft.isRightToLeft(self) { location = bounds.width - location }
+      if settings.disablePanGestures {
+          onDidTouch(location)
+          return !(gestureRecognizer is UIPanGestureRecognizer)
+      }
+      onDidTouch(location)
       return true
   }
 
